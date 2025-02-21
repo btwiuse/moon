@@ -429,6 +429,7 @@ pub struct CheckOpt {
     pub package_path: Option<PathBuf>,
     pub patch_file: Option<PathBuf>,
     pub no_mi: bool,
+    pub explain: bool,
 }
 
 #[derive(Debug, Clone, Default)]
