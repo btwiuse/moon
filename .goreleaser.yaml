@@ -16,6 +16,7 @@ builds:
       # x86_64-pc-windows-gnu
     flags:
       - --package=moon
+      - --release
   - id: moonrun
     binary: moonrun
     builder: rust
@@ -27,6 +28,7 @@ builds:
       # x86_64-pc-windows-gnu
     flags:
       - --package=moonrun
+      - --release
 
 archives:
   - id: archive
