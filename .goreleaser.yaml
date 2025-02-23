@@ -39,4 +39,4 @@ archives:
       {{ .ProjectName }}-v{{ .Version }}-{{ .Target }}
     format_overrides:
       - goos: windows
-        format: zip
+        formats: ["zip"]
