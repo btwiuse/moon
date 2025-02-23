@@ -1,0 +1,40 @@
+# .goreleaser.yaml
+
+project_name: moon
+
+version: 2
+
+builds:
+  - id: moon
+    binary: moon
+    builder: rust
+    tool: cargo
+    command: zigbuild
+    targets:
+      - aarch64-unknown-linux-gnu
+    flags:
+      - --package=moon
+      - --release
+  - id: moonrun
+    binary: moonrun
+    builder: rust
+    tool: cargo
+    command: zigbuild
+    targets:
+      - aarch64-unknown-linux-gnu
+    flags:
+      - --package=moonrun
+      - --release
+
+archives:
+  - id: archive
+    builds:
+      - moon
+      - moonrun
+    files:
+      - LICENSE
+    name_template: >-
+      {{ .ProjectName }}-v{{ .Version }}-{{ .Target }}
+    format_overrides:
+      - goos: windows
+        formats: ["zip"]
