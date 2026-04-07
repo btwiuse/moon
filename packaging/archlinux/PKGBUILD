@@ -1,0 +1,42 @@
+# Maintainer: MoonBit contributors
+
+pkgname=moonbit-git
+pkgver=0.0.0
+pkgrel=1
+pkgdesc="The build system and package manager for MoonBit"
+arch=('x86_64' 'aarch64')
+url="https://github.com/moonbitlang/moon"
+license=('AGPL-3.0-or-later')
+depends=('gcc-libs' 'glibc')
+makedepends=('cargo' 'git')
+provides=("moonbit")
+conflicts=("moonbit" "moonbit-bin")
+options=('!debug')
+source=("${pkgname}::git+https://github.com/moonbitlang/moon.git")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$pkgname"
+  git describe --tags --long --abbrev=7 \
+    | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+prepare() {
+  cd "$pkgname"
+  git submodule update --init --recursive
+  cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+}
+
+build() {
+  cd "$pkgname"
+  export CARGO_TARGET_DIR=target
+  cargo build --frozen --release --package moon --package moonrun
+}
+
+package() {
+  cd "$pkgname"
+
+  install -Dm755 target/release/moon "$pkgdir/usr/bin/moon"
+  install -Dm755 target/release/moonrun "$pkgdir/usr/bin/moonrun"
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}
