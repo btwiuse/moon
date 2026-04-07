@@ -4,6 +4,10 @@ project_name: moon
 
 version: 2
 
+before:
+  hooks:
+    - cargo binstall -y cargo-zigbuild --install-path /usr/bin
+
 builds:
   - id: moon
     binary: moon
